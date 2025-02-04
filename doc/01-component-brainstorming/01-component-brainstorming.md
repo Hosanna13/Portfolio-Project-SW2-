@@ -1,12 +1,11 @@
 # Portfolio Part 1: Component Brainstorming
 
-- **Name**: <!-- TODO: fill with first and last name (e.g., Brutus Buckeye) then delete this comment -->
-- **Dot Number**: <!-- TODO: fill with OSU dot number (e.g., buckeye.17) then delete this comment -->
-- **Due Date**: <!-- TODO: fill with due date and time (e.g., 10/17 @ 3:10 PM EST) then delete this comment -->
+- **Name**: Hosanna Otchere
+- **Dot Number**: otchere.13
+- **Due Date**: FEB 04, 2025
 
 ## Assignment Overview
 
-<!-- TODO: read the assignment overview then delete this comment -->
 
 The overall goal of the portfolio project is to have you design and implement
 your own OSU component. There are no limits to what you choose to design and
@@ -29,8 +28,6 @@ implement.
 
 ## Assignment Checklist
 
-<!-- TODO: browse the checklist then delete this comment -->
-
 To be sure you have completed everything on this assignment, we have littered
 this document with TODO comments. You can browse all of them in VSCode by
 opening the TODOs window from the sidebar. The icon looks like a tree and will
@@ -52,8 +49,6 @@ to the tree diagram (you may remove this one as well):
 
 ## Assignment Learning Objectives
 
-<!-- TODO: read the assignment learning objectives then delete this comment -->
-
 Without learning objectives, there really is no clear reason why a particular
 assessment or activity exists. Therefore, to be completely transparent, here is
 what we're hoping you will learn through this particular aspect of the portfolio
@@ -67,7 +62,6 @@ project. Specifically, students should be able to:
 
 ## Assignment Rubric: 10 Points
 
-<!-- TODO: read the assignment rubric then delete this comment -->
 
 Again, to be completely transparent, most of the portfolio project, except the
 final submission, is designed as a formative assessment. Formative assessments
@@ -106,15 +100,10 @@ Below is further rationale/explanation for the rubric items above:
 > brainstorming. Plus it helps us get to know you better! Feel free to share
 > images in this section.
 
-<!-- TODO: briefly talk about your interests then delete this comment.
-Also, protip: you can preview what your response looks like by hitting
-the magnifying glass icon in the upper-right corner or pressing CTRL+K and
-then V. This kind of button combination is called a chord, for whatever
-reason -->
+Currently, my interest are in animation. Growing up I always had interest in creating film and media. Throughout Highschool my main extracircular was video editing where I made fans edits and animation. Later, I got an internship where I did reserach on video processing and I loved it. I had no clue i can combine both of my interest into a degree. 
 
 ## Assignment
 
-<!-- TODO: read the assignment section then delete this comment -->
 
 As previously stated, you are tasked with brainstorming 3 possible components.
 To aid you in this process, we have provided [some example components][example-components]
@@ -122,7 +111,6 @@ that may help you in your brainstorming. All of these components were made at
 some point by one of your peers, so you should feel confident that you can
 accomplish any of them.
 
-<!-- TODO: browse the list of possible projects then delete this comment -->
 
 There is no requirement that you use any of the components listed above.
 If you want to model something else, go for it! Very common early object
@@ -200,68 +188,89 @@ will likely refine your design to make your implementation easier to use.
 
 > Please use this section to share your designs.
 
-- Component Design #1: <!-- TODO: give component a name then delete this comment -->
+- Component Design #1: Animation Record 
   - **Description**:
-    - <!-- TODO: describe your component then delete this comment -->
+      Represents a single frame in animation. It stores information about the frame, image, duration, and transformations. The purpose is to allow manipulcation of frames in an animation sequence. 
   - **Kernel Methods**:
-    - <!-- TODO: list kernel methods then delete this comment -->
+      - void setImage(String ImagePath): sets the image for this frame
+      - void setDuration(int milliseconds): sets the duration of this frame
+      - void applyTransformation(Transfomration t): applies a transformation (e.g scaling, rotation)
   - **Secondary Methods**:
-    - <!-- TODO: list secondary methods then delete this comment -->
+    - void blendWith(AnimationFrame other , double alpha): blends this frame with another frame using alpha transparency 
+    - void adjustBrightness(double factor): modifies the brightness of the frame
+    - void addFilter(FilterType filter): adds fliter (like grayscale, moasic (if possible), and speia etc,..)
+    - AnimationFrame clone(): returns a copy of the frame 
   - **Additional Considerations** (*note*: "I don't know" is an acceptable
     answer for each of the following questions):
     - Would this component be mutable? Answer and explain:
-      - <!-- TODO: provide an argument then delete this comment -->
+      - Yes, because the animation frames needs to be modified dynamically. 
     - Would this component rely on any internal classes (e.g., `Map.Pair`)?
       Answer and explain:
-      - <!-- TODO: provide an argument then delete this comment -->
+      - Maybe, like transformation class might need some. 
     - Would this component need any enums or constants (e.g.,
       `Program.Instruction`)? Answer and explain:
-      - <!-- TODO: provide an argument then delete this comment -->
+      - Yes for different filter types, like SPEIA, GRAYSCALE, INVERT, BLUR
     - Can you implement your secondary methods using your kernel methods?
       Answer, explain, and give at least one example:
-      - <!-- TODO: provide an argument then delete this comment -->
+      - yes for example blendWidth can modifty the image by adjusting pixel values using setImage. 
 
-- Component Design #2: <!-- TODO: give component a name then delete this comment -->
+- Component Design #2: KeyframeAnimation 
   - **Description**:
-    - <!-- TODO: describe your component then delete this comment -->
+    - This compontent models an animation sequence using keyframes, similar to how ADOBE AFTER EFFECTS handles animations. It allows users to define keygrams at spefic times and mess with them to create smooth animations. 
   - **Kernel Methods**:
-    - <!-- TODO: list kernel methods then delete this comment -->
+    - void addKeyFrame (int time, AnimatoinState state): Adds a keyframe at the given time with given animation sate. 
+    - void removeKeyFrame(int time): Removes teh keyframe at the speficied time 
+    - AninationState getState(int time): gets the animation state at the time. 
   - **Secondary Methods**:
-    - <!-- TODO: list secondary methods then delete this comment -->
+    - void setEasing(int time, EasingType type): applies easy function (like linear, ease-in, ease out) to a keyframe. 
+    - void apllyTranformation (int time, Transform t): Applies tranfomatiosn (eg, scaling, roation, opactiyt ) at a spefic keyframe 
+    - void previewAnimation (int startTiem, int endTime): Generates a preview o the animation between two timestamps. 
+    - void exporttoJSON(String filePath): Saves the animation data in JSON format use in other software., 
+    void importfrom JSON(Stirng filePath): loads an animation from a JSON file. 
   - **Additional Considerations** (*note*: "I don't know" is an acceptable
     answer for each of the following questions):
     - Would this component be mutable? Answer and explain:
-      - <!-- TODO: provide an argument then delete this comment -->
+      - ues, aniamtions needs to be updated. 
     - Would this component rely on any internal classes (e.g., `Map.Pair`)?
       Answer and explain:
-      - <!-- TODO: provide an argument then delete this comment -->
+      - maybe some external
     - Would this component need any enums or constants (e.g.,
       `Program.Instruction`)? Answer and explain:
-      - <!-- TODO: provide an argument then delete this comment -->
+      - <yes for easing tpes
     - Can you implement your secondary methods using your kernel methods?
       Answer, explain, and give at least one example:
-      - <!-- TODO: provide an argument then delete this comment -->
+      - yes, previewAnimation can go through keyframes using getStateAT(), and applu tranformsations using applyTranstion(). 
 
-- Component Design #3: <!-- TODO: give component a name then delete this comment -->
+- Component Design #3: AutoSubtitleGenerator
   - **Description**:
-    - <!-- TODO: describe your component then delete this comment -->
+    - This component automatically generates subtitles for a given video by analyzing its audio track using speech-to-text processing. It synchronizes subtitles with speech, formats them correctly, and allows export in common formats like SRT and VTT.
+
   - **Kernel Methods**:
-    - <!-- TODO: list kernel methods then delete this comment -->
+    - void processVideo(String videoPath): Extracts the audio track from the video and generates subtitles.
+    - void generateSubtitles(String audioPath): Converts the audio into text, timestamps the text, and stores the subtitles.
+    - List<SubtitleEntry> getSubtitles(): Returns a list of generated subtitles with their timestamps.
   - **Secondary Methods**:
-    - <!-- TODO: list secondary methods then delete this comment -->
+    - void editSubtitle(int startTime, String newText): Manually modifies a generated subtitle at a specific time.
+    - void editSubtitle(int startTime, String newText): Manually modifies a generated subtitle at a specific time.
+    - void editSubtitle(int startTime, String newText): Manually modifies a generated subtitle at a specific time.
+    - void mergeSubtitles(int startTime1, int startTime2): Merges two consecutive subtitles into one
+    - void splitSubtitle(int startTime, int splitPoint): Splits a long subtitle into two at a specific word.
+    - 	void setMaxWordsPerSubtitle(int maxWords): Adjusts the subtitle length to improve readability.
+    - void exportToSRT(String filePath): Saves subtitles in SRT format.
+    - vvoid exportToSRT(String filePath): Saves subtitles in SRT format.
   - **Additional Considerations** (*note*: "I don't know" is an acceptable
     answer for each of the following questions):
     - Would this component be mutable? Answer and explain:
-      - <!-- TODO: provide an argument then delete this comment -->
+      - Yes, since subtitles might need to be edited, formatted, or adjusted manually.
     - Would this component rely on any internal classes (e.g., `Map.Pair`)?
       Answer and explain:
-      - <!-- TODO: provide an argument then delete this comment -->
+      - Yes, a SubtitleEntry class to store text, start time, and end time.
     - Would this component need any enums or constants (e.g.,
       `Program.Instruction`)? Answer and explain:
-      - <!-- TODO: provide an argument then delete this comment -->
+      - Yes, for speech recognition engines. 
     - Can you implement your secondary methods using your kernel methods?
       Answer, explain, and give at least one example:
-      - <!-- TODO: provide an argument then delete this comment -->
+      - Yes, for speech recognition engines:
 
 ## Post-Assignment
 
@@ -288,7 +297,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Calendar Versioning](https://calver.org/) of
 the following form: YYYY.0M.0D.
 
-## YYYY.MM.DD
+## 2025.02.04
 
 ### Added
 
@@ -309,7 +318,6 @@ of development.
 
 ### Submission
 
-<!-- TODO: read the submission instructions then delete this comment -->
 
 If you have completed the assignment using this template, we recommend that
 you convert it to a PDF before submission. If you're not sure how, check out
@@ -319,11 +327,9 @@ all your work is there before submitting. For future assignments, you will
 just be submitting a link to a pull request. This will be the only time
 you have to submit any PDFs.
 
-<!-- TODO: upload a PDF of this document and the CHANGELOG to Carmen then delete this comment -->
 
 ### Peer Review
 
-<!-- TODO: review the peer review guidelines then delete this comment -->
 
 Following the completion of this assignment, you will be assigned three
 students' component brainstorming assignments for review. Your job during the
