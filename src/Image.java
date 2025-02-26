@@ -1,4 +1,9 @@
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.Random;
+
+import javax.imageio.ImageIO;
 
 public class Image {
     // Image Dimensions
@@ -7,6 +12,7 @@ public class Image {
 
     // pixels[row][col][channel]: channel 0 = R, 1 = G, 2 = B. <- within image
     private int[][][] pixels;
+    private int totalPixel;
 
     // Constructor: not default
     /*
@@ -33,9 +39,14 @@ public class Image {
         }
 
         // Check if RBG values are within the vaild range (0 - 255)
-        for (int i = 0; i < 3; ++i) { // TODO: fix time Complexity O(n) -> O(1)
-            initialColor[i] = this.clip(initialColor[i]);
-        }
+        /*
+         * for (int i = 0; i < 3; ++i) { initialColor[i] =
+         * this.clip(initialColor[i]); }
+         */
+        // fix time Complexity O(n) -> O(1)
+        initialColor[0] = this.clip(initialColor[0]);
+        initialColor[1] = this.clip(initialColor[1]);
+        initialColor[2] = this.clip(initialColor[2]);
 
         // stInance varaibles
         this.width = width;
@@ -54,7 +65,8 @@ public class Image {
         }
     }
 
-    // Update @7:04 - Feb 20 Helper Method Called Clip
+    //Helper Method's
+    //Called Clip
     /*
      * @param: val
      *
@@ -70,6 +82,11 @@ public class Image {
 
     private int getCol(int indx) {
         return indx % this.width;
+    }
+
+    // totalPixel: returns # of pixels
+    public void totalPixel() {
+        this.totalPixel = this.width * this.height;
     }
 
     /*
@@ -103,6 +120,12 @@ public class Image {
             this.pixels[row][col][0] = this.clip(color[0]);
             this.pixels[row][col][1] = this.clip(color[1]);
             this.pixels[row][col][2] = this.clip(color[2]);
+        } else {
+            try {
+                throw new IllegalAccessException("Invaild Index"); // auto complete did the whole try catch, intially i had new
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -142,6 +165,42 @@ public class Image {
     }
 
     /*
+     * Save Image
+     */
+    public void saveImge(String filename) {
+        // check if filename have .png
+        if (!filename.contains("png")) {
+            filename = filename + ".png";
+        }
+
+        // Buffered Image stores image in ram
+        BufferedImage image = new BufferedImage(this.width, this.height,
+                BufferedImage.TYPE_INT_RGB);
+        // last part determines the like the colorspace of the file
+        for (int r = 0; r < this.height; ++r) {
+            for (int c = 0; c < this.width; ++c) {
+                int red = this.pixels[r][c][0];
+                int green = this.pixels[r][c][1];
+                int blue = this.pixels[r][c][2];
+                int rgb = (red << 16) | (green << 8) | blue; // googled this
+                image.setRGB(r, c, rgb);
+            }
+        }
+
+        // Store that into file
+        File output = new File(filename);
+        // ImageIO.write(image, "png", output);
+        try {
+            ImageIO.write(image, "png", output);
+            System.out.println("Image saved as: " + filename);
+        } catch (IOException e) { // this is needed for some reason to make ImageIO.write work ( i got like an error)
+            System.out.println("Failed Image Not Saved");
+            e.printStackTrace(); // paint had the same thing so :0
+        }
+
+    }
+
+    /*
      * SECONDARY METHODS: randmizeImage, grayscale, guasuainBlur (hardest),
      * clearImage
      */
@@ -149,9 +208,9 @@ public class Image {
      * clearImage: Erases the entire image
      */
     public void clearImage() {
-        int totalPixels = this.width * this.height;
         // i: is the linear index of pixel (hopefully)
-        for (int i = 0; i < totalPixels; ++i) {
+        this.totalPixel();
+        for (int i = 0; i < this.totalPixel; ++i) {
             this.erase(i);
         }
     }
@@ -161,41 +220,62 @@ public class Image {
 
     public void randmizeImage() {
         Random rand = new Random();
-        int totalPixels = this.width * this.height;
-        for (int i = 0; i < totalPixels; ++i) {
+        this.totalPixel();
+        for (int i = 0; i < this.totalPixel; ++i) {
             int[] color = { rand.nextInt(256), rand.nextInt(256),
                     rand.nextInt(256) };
             this.paint(i, color);
         }
     }
+    /*
+     * SetColor: sets entire image to given color
+     *
+     * @requires: size of color to be 3
+     */
+
+    public void setColor(int[] color) {
+        Random rand = new Random();
+        for (int i = 0; i < this.totalPixel; ++i) {
+            this.paint(i, color);
+        }
+    }
 
     public static void main(String[] args) { // main to test
-        // Create a 10x10 image with an initial gray color (150,150,150).
-        int[] color = { 150, 150, 150 };
+        // Test 0:  Constuctor & Printing Image + SaveImage
+        int[] color = { 255, 255, 255 };
         Image img = new Image(3, 3, color);
-        System.out.println("Intalized Image");
-
-        // Print Image
-        img.printImage();
+        System.out.println("Test Constructor + Print Image");
+        //img.printImage();
+        img.saveImge(" Test 0:  Constuctor & Printing Image + SaveImage");
 
         // Test 1: Paint Index 0, blue?
         int[] blue = { 0, 0, 255 };
         System.out.println("Index 0: Blue");
         img.paint(0, blue);
-        // check
+
+        // check - contains check
         System.out.println(img.contains(0));
-        img.printImage();
+        // img.printImage();
+        img.saveImge("Test 1: Paint Index 0, blue?");
+
+        // Test 1a: Painting Out of Index (should be an error)
+        img.paint(232, color); // index - exceeds # of pixels it should not work correcty
 
         // Test 2: Checking Clear Image
         System.out.println("Test 2: Checking Clear Image ");
         img.clearImage();
-        img.printImage();
+        //   img.printImage();
+        img.saveImge("Test 2: Checking Clear Image ");
 
-        // Test 2: Secondary Method RandomIze Image
-        System.out.println("Test 2: Secondary Method RandomIze Image");
+        // Test 3: Secondary Method RandomIze Image
+        System.out.println("Test 3: Secondary Method RandomIze Image");
         img.randmizeImage();
-        img.printImage();
+        // img.printImage();
+        img.saveImge("Test 3: Secondary Method RandomIze Image.png");
 
+        // Test 4: Save Image
+        System.out.println("Test 4: Save Image");
+        img.saveImge("Test4.png");
         // Save the original image
 
         // img.saveImage("original.png");
