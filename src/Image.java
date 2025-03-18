@@ -51,6 +51,7 @@ public class Image {
         // stInance varaibles
         this.width = width;
         this.height = height;
+        int a = 0;
 
         // create 3D pixel array (height x width x RGB channels)
         this.pixels = new int[height][width][3];
@@ -243,7 +244,7 @@ public class Image {
     public static void main(String[] args) { // main to test
         // Test 0:  Constuctor & Printing Image + SaveImage
         int[] color = { 255, 255, 255 };
-        Image img = new Image(3, 3, color);
+        Image img = new Image(1080, 1080, color);
         System.out.println("Test Constructor + Print Image");
         //img.printImage();
         img.saveImge(" Test 0:  Constuctor & Printing Image + SaveImage");
