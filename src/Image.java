@@ -51,7 +51,6 @@ public class Image {
         // stInance varaibles
         this.width = width;
         this.height = height;
-        int a = 0;
 
         // create 3D pixel array (height x width x RGB channels)
         this.pixels = new int[height][width][3];
@@ -61,7 +60,7 @@ public class Image {
             for (int col = 0; col < width; col++) {
                 this.pixels[row][col][0] = initialColor[0]; // Red Channel
                 this.pixels[row][col][1] = initialColor[1]; // Green Channel
-                this.pixels[row][col][2] = initialColor[2]; // Blue Channel // IM COOKIGN RN
+                this.pixels[row][col][2] = initialColor[2]; // Blue Channel
             }
         }
     }
