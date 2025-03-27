@@ -17,7 +17,7 @@ public class Image1 implements ImageKernel {
                     "Invaild Image Dimensions, diemnsions must be postive.");
         }
 
-        if (intialColor == null || intialColor.length != 3) { // vaild color
+        if (intialColor == null || intialColor.length != 3) {
             throw new IllegalArgumentException(
                     "Intial color must be an array of 3 RGB values.");
         }
@@ -40,22 +40,23 @@ public class Image1 implements ImageKernel {
         }
     }
 
-    /*
-     * Helper Functions
-     */
-    private int clip(int val) {
+    @Override
+    public int clip(int val) {
         return Math.max(0, Math.min(255, val));
     }
 
-    private int getRow(int indx) {
+    @Override
+    public int getRow(int indx) {
         return indx / this.width;
     }
 
-    private int getCol(int indx) {
+    @Override
+    public int getCol(int indx) {
         return indx % this.width;
     }
 
-    public int gettotalPixel() {
+    @Override
+    public final int gettotalPixel() {
         return this.width * this.height;
     }
 
@@ -63,7 +64,7 @@ public class Image1 implements ImageKernel {
      * KENRAL METHODS
      */
     @Override
-    public boolean contains(int index) {
+    public final boolean contains(int index) {
         int row = this.getRow(index);
         int col = this.getCol(index);
         return (row >= 0 && row < this.height)
@@ -71,7 +72,7 @@ public class Image1 implements ImageKernel {
     }
 
     @Override
-    public void paint(int index, int[] color) {
+    public final void paint(int index, int[] color) {
         if (this.contains(index)) {
             int row = this.getRow(index);
             int col = this.getCol(index);
@@ -89,7 +90,7 @@ public class Image1 implements ImageKernel {
     }
 
     @Override
-    public void erase(int index) {
+    public final void erase(int index) {
         if (this.contains(index)) {
             int row = this.getRow(index);
             int col = this.getCol(index);
@@ -100,18 +101,21 @@ public class Image1 implements ImageKernel {
     }
 
     @Override
-    public void printImage() {
+    public final void printImage() {
         for (int r = 0; r < this.height; ++r) {
             for (int c = 0; c < this.width; ++c) {
                 int red = this.pixels[r][c][0];
                 int green = this.pixels[r][c][1];
                 int blue = this.pixels[r][c][0];
+                System.out.printf("(%3d, %3d, %3d) ", red, green, blue);
             }
+            System.out.println();
         }
+        System.out.println();
     }
 
     @Override
-    public void saveImage(String filename) {
+    public final void saveImage(String filename) {
         if (!filename.contains("png")) {
             filename += ".png";
         }
@@ -137,17 +141,17 @@ public class Image1 implements ImageKernel {
     }
 
     @Override
-    public void clearImage() {
-        this.totalPixel();
+    public final void clearImage() {
+        this.totalPixel = this.gettotalPixel();
         for (int i = 0; i < this.totalPixel; ++i) {
             this.erase(i);
         }
     }
 
     @Override
-    public void randmizeImage() {
+    public final void randomizeImage() {
         Random rand = new Random();
-        this.totalPixel();
+        this.totalPixel = this.gettotalPixel();
         for (int i = 0; i < this.totalPixel; ++i) {
             int[] color = { rand.nextInt(256), rand.nextInt(256),
                     rand.nextInt(256) };
@@ -156,7 +160,7 @@ public class Image1 implements ImageKernel {
     }
 
     @Override
-    public void setColor(int[] color) {
+    public final void setColor(int[] color) {
         Random rand = new Random();
         for (int i = 0; i < this.totalPixel; ++i) {
             this.paint(i, color);
