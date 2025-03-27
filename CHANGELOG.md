@@ -8,14 +8,22 @@ the following form: YYYY.0M.0D.
 ## 2025.03.26
 
 ### Added
+- Implemented ImageSecondary abstract class based on enhanced interface
+
+### Updated
+- Restructured file names: ImageKernel → ImageEnhanced, Image1 → ImageComponent, etc.
+
+## 2025.03.26
+
+### Added
 - Designed kernel and enhanced interfaces for Image component
 
 ### Updated
 - Changed class structure to separate functionality into kernel and enhanced interfaces
 
 ## 2025.02.28
-- Implemented methods, created class structure. 
-  
+- Implemented methods, created class structure.
+
 ## 2025.02.20
 
 ### Added
