@@ -1,6 +1,6 @@
 import java.util.Random;
 
-public abstract class ImageSecondary implements ImageKernel {
+public abstract class ImageSecondary implements Image {
     // Implement these using only kernel methods:
 
     // TODO - clearImage()
@@ -55,7 +55,7 @@ public abstract class ImageSecondary implements ImageKernel {
     // Also implement:
     // - toString()
     @Override
-    public String toString() {
+    public String toString() { // human reable part
         String result = "";
         for (int r = 0; r < this.getHeight(); ++r) {
             for (int c = 0; c < this.getWidth(); ++r) {
@@ -77,22 +77,30 @@ public abstract class ImageSecondary implements ImageKernel {
     public boolean equals(Object o) {
         boolean result = false;
         if (this == o) {
-            result = true;
+            return true;
+        }
+
+        if (!(o instanceof Image)) {
+            return false;
         }
 
         Image other = (Image) o;
 
-        if (this.getWidth() == other.getWidth()
-                && this.getHeight() == other.getWidth()) {
-            // go through pixels
-            for (int i = 0; i < this.gettotalPixel(); ++i) {
-                if (this.contains(i) && other.contains(i)) {
-                    // 2 for loops row & col use that getpixel()[r][c][0] == other.getpixel()[r][c][0] // if that is true count
-                    // if count == # of pixels result = true.
-                }
-            }
+        if (this.getWidth() != other.getWidth()
+                || this.getHeight() != other.getWidth()) {
+            return false;
 
         }
+
+        // go through pixels
+        for (int i = 0; i < this.gettotalPixel(); ++i) {
+            if (this.contains(i) && other.contains(i)) {
+                // 2 for loops row & col use that getpixel()[r][c][0] == other.getpixel()[r][c][0] // if that is true count
+                // if count == # of pixels result = true.
+            }
+        }
+
+        return true;
 
     }
 }

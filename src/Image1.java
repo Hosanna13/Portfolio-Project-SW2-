@@ -5,7 +5,7 @@ import java.util.Random;
 
 import javax.imageio.ImageIO;
 
-public class Image1 implements ImageKernel {
+public class Image1 implements Image {
     private int width;
     private int height;
     private int[][][] pixels;
