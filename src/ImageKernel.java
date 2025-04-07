@@ -1,7 +1,32 @@
 import components.standard.Standard;
 
 /**
+ * Image kernel component that defines all primary operations for an image.
+ * (Note: by package-wide convention, all references are non-null.)
  *
+ * @mathsubtypes <pre>
+ * IMAGE is a finite 2D grid of pixels, where each pixel is an RGB color:
+ *     each pixel = (r, g, b), with 0 <= r, g, b <= 255
+ *  exemplar img
+ *  constraint
+ *     For all row, col within image bounds:
+ *       each img.pixels[row][col] = [r, g, b] and values are clipped to [0, 255]
+ * </pre>
+ *
+ * @mathmodel type ImageKernel is modeled by a 3D array [height][width][3] of
+ *            RGB values
+ *
+ * @initially <pre>
+ * (width, height, initialColor):
+ *     ensures
+ *         image is filled with initialColor
+ *         and dimensions are width x height
+ * </pre>
+ *
+ * @iterator <pre>
+ * entries(~this.seen * ~this.unseen) = this
+ * and |~this.seen * ~this.unseen| = |this|
+ * </pre>
  */
 public interface ImageKernel extends Standard<Image> {
     /**
@@ -101,5 +126,17 @@ public interface ImageKernel extends Standard<Image> {
      * @ensures the pixel at the given index is set to (0, 0, 0)
      */
     void erase(int index);
+
+    /**
+     * Replaces the current value of this Image with the value of the given
+     * Image {@code o}.
+     *
+     * @param o
+     *            the Image to copy from
+     * @requires o is not null, o is not the same object as this, and o has the
+     *           same dimensions (width and height) as this
+     * @ensures this = o and o = #o
+     */
+    void copyFrom(Image o);
 
 }

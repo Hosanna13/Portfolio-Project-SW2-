@@ -9,6 +9,14 @@ the following form: YYYY.0M.0D.
 
 ### Added
 - Implemented ImageSecondary abstract class based on enhanced interface
+- Remaining Documentation
+- Checkstyle Fixes
+- New Kernal Method called "copyFrom".
+
+## 2025.03.26
+
+### Added
+- Implemented ImageSecondary abstract class based on enhanced interface
 
 ### Updated
 - Restructured file names: ImageKernel → ImageEnhanced, Image1 → ImageComponent, etc.
