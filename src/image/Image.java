@@ -1,4 +1,32 @@
-public interface ImageKernel extends Image {
+package image;
+
+/**
+ * Image is the full component interface that extends ImageKernel and defines
+ * secondary operations on an image. These methods build on top of kernel
+ * behavior and provide common actions like clearing, coloring, saving, and
+ * printing.
+ *
+ * <p>
+ * All pixel values are modeled as RGB triplets (r, g, b), where each value is
+ * in the range [0, 255]. These other methods must only rely on kernel methods
+ * defined in the ImageKernel interface.
+ *
+ * @mathmodel type Image is modeled as a 2D grid of pixels, where each pixel is
+ *            a triple of integers (R, G, B)
+ *
+ * @initially <pre>
+ * (width, height, initialColor):
+ *   ensures all pixels = initialColor
+ * </pre>
+ *
+ * @convention - All references and inputs are non-null - All updates are
+ *             performed using kernel operations
+ *
+ * @correspondence - Each method corresponds to standard image operations that
+ *                 modify or retrieve values from the image using getPixels()
+ *                 and related kernel methods.
+ */
+public interface Image extends ImageKernel {
     /**
      * Clears the entire image by setting all pixels to black.
      *
@@ -45,5 +73,4 @@ public interface ImageKernel extends Image {
      * @ensures a formatted text representation of the image is printed
      */
     void printImage();
-
 }
