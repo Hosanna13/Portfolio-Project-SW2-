@@ -45,16 +45,6 @@ public class Image1 extends ImageSecondary {
     private static final int RED_BALANCE = 16;
     private static final int GREEN_BALANCE = 8;
     private static final int MAX_COLOR_VALUE = 256;
-    /*
-     * Convention: - pixels is a 3D array of dimensions [height][width][3] -
-     * Each pixel contains exactly 3 color channels (RGB), each in [0, 255] -
-     * width > 0 and height > 0
-     *
-     * Correspondence: - this = a grid of pixels representing an image -
-     * this.pixels[r][c][0] = red channel of pixel at (r, c) -
-     * this.pixels[r][c][1] = green channel of pixel at (r, c) -
-     * this.pixels[r][c][2] = blue channel of pixel at (r, c)
-     */
 
     /**
      * The width of the image in pixels.

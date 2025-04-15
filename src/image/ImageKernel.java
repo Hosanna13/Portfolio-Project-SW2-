@@ -104,8 +104,6 @@ public interface ImageKernel extends Standard<Image> {
      /**
       * Paints the pixel at the given index with the specified RGB color.
       *
-      * @param index
-      *             the linear index of the pixel
       * @param color
       *             an array of 3 integers representing the RGB values
       * @requires color.length == 3

@@ -19,12 +19,6 @@ package image;
  *   ensures all pixels = initialColor
  * </pre>
  *
- * @convention - All references and inputs are non-null - All updates are
- *             performed using kernel operations
- *
- * @correspondence - Each method corresponds to standard image operations that
- *                 modify or retrieve values from the image using getPixels()
- *                 and related kernel methods.
  */
 public interface Image extends ImageKernel {
     /**
