@@ -14,7 +14,7 @@ package image;
 import java.io.File;
 import java.io.IOException;
 import java.util.Random;
-
+import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 
 /**
@@ -50,7 +50,7 @@ import javax.imageio.ImageIO;
 public abstract class ImageSecondary implements Image {
     private static final int MIN_COLOR_VALUE = 0;
     private static final int MAX_COLOR_VALUE = 255;
-    private static final int RGB_CHANNELS = 3;
+    protected static final int RGB_CHANNELS = 3;
     private static final int RED_BALANCE = 16;
     private static final int GREEN_BALANCE = 8;
     private static final int GAUSSIAN_DIVISOR = 2;
@@ -244,7 +244,6 @@ public abstract class ImageSecondary implements Image {
      * @updates this
      * @ensures each pixel is replaced with the average of itself and neighbors
      */
-    @Override
     public void GaussianBlur() {
         //  Create Copy of the Image
         Image blurredImage = new Image1(this.getWidth(), this.getHeight(),
