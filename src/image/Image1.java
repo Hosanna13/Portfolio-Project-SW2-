@@ -1,5 +1,6 @@
 package image;
 
+import java.awt.image.BufferedImage;
 /*
  * Image1 is the kernel implementation of the Image component using a 3D array
  * of integers to store pixel RGB values. This class provides direct access
@@ -10,7 +11,7 @@ package image;
 import java.io.File;
 import java.io.IOException;
 import java.util.Random;
-import java.awt.image.BufferedImage;
+
 import javax.imageio.ImageIO;
 
 /**
@@ -275,6 +276,26 @@ public class Image1 extends ImageSecondary {
         for (int i = 0; i < this.getTotalPixel(); ++i) {
             this.paint(i, color);
         }
+    }
+
+    @Override
+    public void clear() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'clear'");
+    }
+
+    @Override
+    public Image newInstance() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException(
+                "Unimplemented method 'newInstance'");
+    }
+
+    @Override
+    public void transferFrom(Image arg0) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException(
+                "Unimplemented method 'transferFrom'");
     }
 
 }

@@ -1,6 +1,6 @@
 package image;
 
-//import components.standard.Standard;
+import components.standard.Standard;
 
 /**
  * Image kernel component that defines all primary operations for an image.
@@ -30,7 +30,7 @@ package image;
  * and |~this.seen * ~this.unseen| = |this|
  * </pre>
  */
-public interface ImageKernel {
+public interface ImageKernel extends Standard<Image> {
      /**
       * Clears the entire image by setting all pixels to black.
       *

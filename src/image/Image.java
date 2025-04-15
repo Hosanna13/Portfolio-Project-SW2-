@@ -50,59 +50,6 @@ public interface Image extends ImageKernel {
     int getCol(int index);
 
     /**
-     * Returns the total number of pixels in the image.
-     *
-     * @return the product of width and height
-     * @ensures returns width * height
-     */
-    int gettotalPixel();
-
-    /**
-     * Returns the width of the image in pixels.
-     *
-     * @return the width
-     * @ensures result > 0
-     */
-    int getWidth();
-
-    /**
-     * Returns the height of the image in pixels.
-     *
-     * @return the height
-     * @ensures result > 0
-     */
-    int getHeight();
-
-    /**
-     * Returns the pixels in image.
-     *
-     * @return pixels
-     */
-    int[][][] getPixels();
-
-    /**
-     * Clips the given value to ensure it lies within the RGB range [0, 255].
-     *
-     * @param val
-     *            the color channel value to clip
-     * @return val if it's between 0 and 255, 0 if less than 0, or 255 if
-     *         greater than 255
-     * @ensures 0 <= result <= 255
-     */
-    int clip(int val);
-
-    /**
-     * Determines whether the given index corresponds to a valid pixel.
-     *
-     * @param index
-     *            the linear index of the pixel
-     * @return true if the index is within bounds; false otherwise
-     * @requires index >= 0
-     * @ensures returns true iff the index maps to a valid pixel in the image
-     */
-    boolean contains(int index);
-
-    /**
      * Paints the pixel at the given index with the specified RGB color.
      *
      * @param index

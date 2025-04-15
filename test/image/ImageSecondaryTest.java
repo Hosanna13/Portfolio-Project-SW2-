@@ -1,5 +1,8 @@
 package image;
 
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertTrue;
+
 import java.util.Arrays;
 
 import org.junit.Test;
@@ -43,7 +46,7 @@ public class ImageSecondaryTest {
     @Test
     public void testRandomizeImage_changesPixels() {
         Image img = new Image1(2, 2, new int[] { 0, 0, 0 });
-        int[][][] before = deepCopy(img.getPixels());
+        int[][][] before = this.deepCopy(img.getPixels());
         img.randomizeImage();
         int[][][] after = img.getPixels();
 
@@ -62,7 +65,7 @@ public class ImageSecondaryTest {
 
     @Test
     public void testGaussianBlur_blursTopLeftPair() {
-        Image img = new Image1(2, 2, new int[] { 100, 150, 200 });
+        Image1 img = new Image1(2, 2, new int[] { 100, 150, 200 });
         img.paint(3, new int[] { 200, 100, 50 }); // change bottom-right pixel
         img.GaussianBlur();
 
@@ -82,6 +85,6 @@ public class ImageSecondaryTest {
                         original[i][j].length);
             }
         }
-        return copy;
+          return copy;
     }
 }
