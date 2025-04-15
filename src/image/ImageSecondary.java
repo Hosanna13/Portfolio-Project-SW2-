@@ -245,32 +245,47 @@ public abstract class ImageSecondary implements Image {
      * @ensures each pixel is replaced with the average of itself and neighbors
      */
     public void GaussianBlur() {
-        //  Create Copy of the Image
-        Image blurredImage = new Image1(this.getWidth(), this.getHeight(),
-                new int[] { 0, 0, 0 });
+        int height = this.getHeight();
+        int width = this.getWidth();
+        int[][][] original = this.getPixels();
 
-        // blurredImage.copyFrom(this); // Black Bar Issue
+        // Define 3x3 Gaussian kernel, normalized
+        double[][] kernel = { { 1 / 16.0, 2 / 16.0, 1 / 16.0 },
+                { 2 / 16.0, 4 / 16.0, 2 / 16.0 },
+                { 1 / 16.0, 2 / 16.0, 1 / 16.0 } };
 
-        int[][][] px = this.getPixels();
+        // Create a new Image to store blurred pixels
+        Image blurred = new Image1(width, height, new int[] { 0, 0, 0 });
 
-        for (int r = 1; r < this.getHeight(); ++r) {
-            for (int c = 1; c < this.getWidth(); ++c) {
-                int[] avgColor = new int[3];
+        for (int i = 0; i < height; ++i) {
+            for (int j = 0; j < width; ++j) {
+                int[] blurredPixel = new int[3];
 
-                // Average each channel with top-left neighbor
-                avgColor[0] = (px[r][c][0] + px[r - 1][c - 1][0])
-                        / GAUSSIAN_DIVISOR;
-                avgColor[1] = (px[r][c][1] + px[r - 1][c - 1][1])
-                        / GAUSSIAN_DIVISOR;
-                avgColor[2] = (px[r][c][2] + px[r - 1][c - 1][2])
-                        / GAUSSIAN_DIVISOR;
+                for (int channel = 0; channel < 3; ++channel) {
+                    double sum = 0.0;
 
-                int index = r * this.getWidth() + c;
-                blurredImage.paint(index, avgColor);
+                    for (int ki = -1; ki <= 1; ++ki) {
+                        for (int kj = -1; kj <= 1; ++kj) {
+                            int ni = i + ki;
+                            int nj = j + kj;
+
+                            if (ni >= 0 && ni < height && nj >= 0
+                                    && nj < width) {
+                                sum += original[ni][nj][channel]
+                                        * kernel[ki + 1][kj + 1];
+                            }
+                        }
+                    }
+
+                    blurredPixel[channel] = this.clip((int) Math.round(sum));
+                }
+
+                int index = i * width + j;
+                blurred.paint(index, blurredPixel);
             }
         }
 
-        // Repalce Values
-        this.copyFrom(blurredImage);
+        // Replace current image with blurred one
+        this.copyFrom(blurred);
     }
 }
