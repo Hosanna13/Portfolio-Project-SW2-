@@ -12,6 +12,8 @@ import org.junit.Test;
  * @author Hosanna
  */
 public class ImageSecondaryTest {
+    //TODO constucrtor test
+    //TODO
 
     @Test
     public void testClearImage() {

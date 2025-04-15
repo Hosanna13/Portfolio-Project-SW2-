@@ -2,9 +2,11 @@ package image;
 
 public class ImageDemoTiny {
     public static void main(String[] args) {
-        Image img = new Image1(48, 27, new int[] {255, 255, 255});
+        Image1 img = new Image1(48, 27, new int[] {255, 255, 255});
         paintPixels(img);
         img.saveImage("waterfall_tiny");
+        img.GaussianBlur();
+        img.saveImage("waterfall_tiny_blurred");
     }
 
     private static void paintPixels(Image img) {
