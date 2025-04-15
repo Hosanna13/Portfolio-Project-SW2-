@@ -41,6 +41,9 @@ import javax.imageio.ImageIO;
  * @date 2025-04-04
  */
 public class Image1 extends ImageSecondary {
+    private static final int RED_BALANCE = 16;
+    private static final int GREEN_BALANCE = 8;
+    private static final int MAX_COLOR_VALUE = 256;
     /*
      * Convention: - pixels is a 3D array of dimensions [height][width][3] -
      * Each pixel contains exactly 3 color channels (RGB), each in [0, 255] -
@@ -67,9 +70,14 @@ public class Image1 extends ImageSecondary {
     private int[][][] pixels;
 
     /**
-     * The total number of pixels in the image (width * height).
+     * Default constructor. Creates a 2x2 image with all black pixels.
+     *
+     * @ensures this.pixels is initialized to [2][2][3] with all values set to 0
+     *          (black)
      */
-    private int totalPixel;
+    public Image1() {
+        this(2, 2, new int[] { 0, 0, 0 });
+    }
 
     /**
      * Constructs a new Image1 object with the specified width, height, and
@@ -89,12 +97,12 @@ public class Image1 extends ImageSecondary {
     public Image1(int width, int height, int[] initialColor) {
         if (width <= 0 || height <= 0) { // vaild dimentions check
             throw new IllegalArgumentException(
-                    "Invaild Image Dimensions, diemnsions must be postive.");
+                    "Invalid image dimensions — width and height must be positive.");
         }
 
         if (initialColor == null || initialColor.length != RGB_CHANNELS) {
             throw new IllegalArgumentException(
-                    "Intial color must be an array of 3 RGB values.");
+                    "Initial color must be an array of 3 RGB values.");
         }
 
         initialColor[0] = this.clip(initialColor[0]);
@@ -131,28 +139,39 @@ public class Image1 extends ImageSecondary {
     }
 
     @Override
-    public final int gettotalPixel() {
+    public final int getTotalPixel() {
         return this.width * this.height;
+    }
+
+    @Override
+    public int getWidth() {
+        return this.width;
+    }
+
+    @Override
+    public int getHeight() {
+        return this.height;
+    }
+
+    @Override
+    public int[][][] getPixels() {
+        return this.pixels;
     }
 
     /*
      * KENRAL METHODS
      */
+
     @Override
     public final void copyFrom(Image o) {
-        for (int i = 0; i < this.gettotalPixel(); ++i) {
-            if (this.contains(i) && o.contains(i)) {
-                for (int r = 0; r < this.getHeight(); ++r) {
-                    for (int c = 0; c < this.getWidth(); ++r) {
-                        int red = this.getPixels()[r][c][0];
-                        int green = this.getPixels()[r][c][1];
-                        int blue = this.getPixels()[r][c][2];
+        int[][][] sourcePixels = o.getPixels();
+        for (int r = 0; r < this.getHeight(); ++r) {
+            for (int c = 0; c < this.getWidth(); ++c) {
+                int[] color = { sourcePixels[r][c][0], sourcePixels[r][c][1],
+                        sourcePixels[r][c][2] };
 
-                        int red1 = o.getPixels()[r][c][0];
-                        int green1 = o.getPixels()[r][c][1];
-                        int blue1 = o.getPixels()[r][c][2];
-                    }
-                }
+                int index = r * this.getWidth() + c;
+                this.paint(index, color);
             }
         }
     }
@@ -175,11 +194,7 @@ public class Image1 extends ImageSecondary {
             this.pixels[row][col][1] = this.clip(color[1]);
             this.pixels[row][col][2] = this.clip(color[2]);
         } else {
-            try {
-                throw new IllegalAccessException("Invaild index ");
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            }
+            throw new IllegalArgumentException("Invalid index: " + index);
         }
     }
 
@@ -196,40 +211,41 @@ public class Image1 extends ImageSecondary {
 
     @Override
     public final void printImage() {
-        for (int r = 0; r < this.height; ++r) {
-            for (int c = 0; c < this.width; ++c) {
-                int red = this.pixels[r][c][0];
-                int green = this.pixels[r][c][1];
-                int blue = this.pixels[r][c][0];
+        int[][][] pixels = this.getPixels();
+        for (int r = 0; r < this.getHeight(); ++r) {
+            for (int c = 0; c < this.getWidth(); ++c) {
+                int red = pixels[r][c][0];
+                int green = pixels[r][c][1];
+                int blue = pixels[r][c][2]; // was incorrectly using red again
                 System.out.printf("(%3d, %3d, %3d) ", red, green, blue);
             }
             System.out.println();
         }
-        System.out.println();
     }
 
     @Override
     public final void saveImage(String filename) {
         String outputName = filename;
-        if (!outputName.contains("png")) {
+        if (!filename.contains("png")) {
             outputName += ".png";
         }
-        BufferedImage image = new BufferedImage(this.width, this.height,
-                BufferedImage.TYPE_INT_RGB);
-        for (int r = 0; r < this.height; ++r) {
-            for (int c = 0; c < this.width; ++c) {
-                int red = this.pixels[r][c][0];
-                int green = this.pixels[r][c][1];
-                int blue = this.pixels[r][c][2];
+        BufferedImage image = new BufferedImage(this.getWidth(),
+                this.getHeight(), BufferedImage.TYPE_INT_RGB);
+        for (int r = 0; r < this.getHeight(); ++r) {
+            for (int c = 0; c < this.getWidth(); ++c) {
+                int[][][] pixels = this.getPixels();
+                int red = pixels[r][c][0];
+                int green = pixels[r][c][1];
+                int blue = pixels[r][c][2];
                 int rgb = (red << RED_BALANCE) | (green << GREEN_BALANCE)
-                        | blue;
-                image.setRGB(r, c, rgb);
+                        | blue; // googled this
+                image.setRGB(c, r, rgb);
             }
         }
-        File output = new File(filename);
+        File output = new File(outputName);
         try {
             ImageIO.write(image, "png", output);
-            System.out.println("Image saved as: " + filename);
+            System.out.println("Image saved as: " + outputName);
         } catch (IOException e) {
             System.out.println("Failed Image Not Saved");
             e.printStackTrace();
@@ -238,8 +254,7 @@ public class Image1 extends ImageSecondary {
 
     @Override
     public final void clearImage() {
-        this.totalPixel = this.gettotalPixel();
-        for (int i = 0; i < this.totalPixel; ++i) {
+        for (int i = 0; i < this.getTotalPixel(); ++i) {
             this.erase(i);
         }
     }
@@ -247,8 +262,7 @@ public class Image1 extends ImageSecondary {
     @Override
     public final void randomizeImage() {
         Random rand = new Random();
-        this.totalPixel = this.gettotalPixel();
-        for (int i = 0; i < this.totalPixel; ++i) {
+        for (int i = 0; i < this.getTotalPixel(); ++i) {
             int[] color = { rand.nextInt(MAX_COLOR_VALUE),
                     rand.nextInt(MAX_COLOR_VALUE),
                     rand.nextInt(MAX_COLOR_VALUE) };
@@ -258,8 +272,7 @@ public class Image1 extends ImageSecondary {
 
     @Override
     public final void setColor(int[] color) {
-        Random rand = new Random();
-        for (int i = 0; i < this.totalPixel; ++i) {
+        for (int i = 0; i < this.getTotalPixel(); ++i) {
             this.paint(i, color);
         }
     }

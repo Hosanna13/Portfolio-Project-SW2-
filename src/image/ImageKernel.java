@@ -1,6 +1,6 @@
 package image;
 
-import components.standard.Standard;
+//import components.standard.Standard;
 
 /**
  * Image kernel component that defines all primary operations for an image.
@@ -30,7 +30,7 @@ import components.standard.Standard;
  * and |~this.seen * ~this.unseen| = |this|
  * </pre>
  */
-public interface ImageKernel extends Standard<Image> {
+public interface ImageKernel {
     /**
      * Returns the row number of the pixel corresponding to the given index.
      *
@@ -59,7 +59,7 @@ public interface ImageKernel extends Standard<Image> {
      * @return the product of width and height
      * @ensures returns width * height
      */
-    int gettotalPixel();
+    int getTotalPixel();
 
     /**
      * Returns the width of the image in pixels.

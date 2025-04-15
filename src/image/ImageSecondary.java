@@ -53,7 +53,8 @@ public abstract class ImageSecondary implements Image {
     private static final int RGB_CHANNELS = 3;
     private static final int RED_BALANCE = 16;
     private static final int GREEN_BALANCE = 8;
-    private static final int GUSSAINDIVI = 2;
+    private static final int GAUSSIAN_DIVISOR = 2;
+
     /**
      * Sets all pixels in the image to black (0, 0, 0).
      *
@@ -62,7 +63,7 @@ public abstract class ImageSecondary implements Image {
      */
     @Override
     public void clearImage() {
-        for (int i = 0; i < this.gettotalPixel(); ++i) {
+        for (int i = 0; i < this.getTotalPixel(); ++i) {
             if (this.contains(i)) {
                 this.erase(i);
             }
@@ -79,7 +80,7 @@ public abstract class ImageSecondary implements Image {
     @Override
     public void randomizeImage() {
         Random rand = new Random();
-        for (int i = 0; i < this.gettotalPixel(); ++i) {
+        for (int i = 0; i < this.getTotalPixel(); ++i) {
             int[] color = { this.clip(rand.nextInt(MAX_COLOR_VALUE)),
                     this.clip(rand.nextInt(MAX_COLOR_VALUE)),
                     this.clip(rand.nextInt(MAX_COLOR_VALUE)) };
@@ -98,8 +99,7 @@ public abstract class ImageSecondary implements Image {
      */
     @Override
     public void setColor(int[] color) {
-        Random rand = new Random();
-        for (int i = 0; i < this.gettotalPixel(); ++i) {
+        for (int i = 0; i < this.getTotalPixel(); ++i) {
             if (this.contains(i)) {
                 this.paint(i, color);
             }
@@ -115,25 +115,27 @@ public abstract class ImageSecondary implements Image {
      */
     @Override
     public void saveImage(String filename) {
+        String outputName = filename;
         if (!filename.contains("png")) {
-            filename += ".png";
+            outputName += ".png";
         }
-        BufferedImage image = new BufferedImage(this.width, this.height,
-                BufferedImage.TYPE_INT_RGB);
-        for (int r = 0; r < this.height; ++r) {
-            for (int c = 0; c < this.width; ++c) {
-                int red = this.pixels[r][c][0];
-                int green = this.pixels[r][c][1];
-                int blue = this.pixels[r][c][2];
+        BufferedImage image = new BufferedImage(this.getWidth(),
+                this.getHeight(), BufferedImage.TYPE_INT_RGB);
+        for (int r = 0; r < this.getHeight(); ++r) {
+            for (int c = 0; c < this.getWidth(); ++c) {
+                int[][][] pixels = this.getPixels();
+                int red = pixels[r][c][0];
+                int green = pixels[r][c][1];
+                int blue = pixels[r][c][2];
                 int rgb = (red << RED_BALANCE) | (green << GREEN_BALANCE)
                         | blue; // googled this
-                image.setRGB(r, c, rgb);
+                image.setRGB(c, r, rgb);
             }
         }
-        File output = new File(filename);
+        File output = new File(outputName);
         try {
             ImageIO.write(image, "png", output);
-            System.out.println("Image saved as: " + filename);
+            System.out.println("Image saved as: " + outputName);
         } catch (IOException e) {
             System.out.println("Failed Image Not Saved");
             e.printStackTrace();
@@ -147,17 +149,16 @@ public abstract class ImageSecondary implements Image {
      */
     @Override
     public void printImage() {
-        for (int r = 0; r < this.height; ++r) {
-            for (int c = 0; c < this.width; ++c) {
-                int red = this.pixels[r][c][0];
-                int green = this.pixels[r][c][1];
-                int blue = this.pixels[r][c][0];
+        int[][][] pixels = this.getPixels();
+        for (int r = 0; r < this.getHeight(); ++r) {
+            for (int c = 0; c < this.getWidth(); ++c) {
+                int red = pixels[r][c][0];
+                int green = pixels[r][c][1];
+                int blue = pixels[r][c][2]; // was incorrectly using red again
                 System.out.printf("(%3d, %3d, %3d) ", red, green, blue);
             }
             System.out.println();
         }
-        System.out.println();
-
     }
 
     /**
@@ -180,7 +181,7 @@ public abstract class ImageSecondary implements Image {
             }
             result += "\n";
         }
-        result += "/n";
+        result += "\n";
 
         return result;
     }
@@ -207,13 +208,13 @@ public abstract class ImageSecondary implements Image {
         Image other = (Image) o;
 
         if (this.getWidth() != other.getWidth()
-                || this.getHeight() != other.getWidth()) {
+                || this.getHeight() != other.getHeight()) {
             return false;
 
         }
 
         // go through pixels
-        for (int i = 0; i < this.gettotalPixel(); ++i) {
+        for (int i = 0; i < this.getTotalPixel(); ++i) {
             if (this.contains(i) && other.contains(i)) {
                 for (int r = 0; r < this.getHeight(); ++r) {
                     for (int c = 0; c < this.getWidth(); ++r) {
@@ -226,7 +227,6 @@ public abstract class ImageSecondary implements Image {
                         int blue1 = other.getPixels()[r][c][2];
 
                         if (red != red1 || green != green1 || blue != blue1) {
-                            break;
                             return false;
                         }
                     }
@@ -247,39 +247,31 @@ public abstract class ImageSecondary implements Image {
     @Override
     public void GaussianBlur() {
         //  Create Copy of the Image
-        int[] color = { MIN_COLOR_VALUE, MIN_COLOR_VALUE, MIN_COLOR_VALUE };
-        Image blurredImage = new Image(getWidth(), getHeight(), color);
-        blurredImage.copyFrom(this); // Black Bar Issue
+        Image blurredImage = new Image1(this.getWidth(), this.getHeight(),
+                new int[] { 0, 0, 0 });
+
+        // blurredImage.copyFrom(this); // Black Bar Issue
+
+        int[][][] px = this.getPixels();
 
         for (int r = 1; r < this.getHeight(); ++r) {
-            for (int c = 1; c < this.getWidth(); ++r) {
-                // Average Each Color Value
-                int redSum = this.getPixels()[r][c][0]
-                        + this.gettotalPixel()[r - 1][j - 1][0];
-                int greenSum = this.getPixels()[r][c][1]
-                        + this.gettotalPixel()[r - 1][j - 1][1];
-                int blueSum = this.getPixels()[r][c][2]
-                        + this.gettotalPixel()[r - 1][j - 1][2];
+            for (int c = 1; c < this.getWidth(); ++c) {
+                int[] avgColor = new int[3];
 
-                int redAvg = redSum / GUSSAINDIVI;
-                int greenAvg = greenSum / GUSSAINDIVI;
-                int blueAvg = blueSum / GUSSAINDIVI;
+                // Average each channel with top-left neighbor
+                avgColor[0] = (px[r][c][0] + px[r - 1][c - 1][0])
+                        / GAUSSIAN_DIVISOR;
+                avgColor[1] = (px[r][c][1] + px[r - 1][c - 1][1])
+                        / GAUSSIAN_DIVISOR;
+                avgColor[2] = (px[r][c][2] + px[r - 1][c - 1][2])
+                        / GAUSSIAN_DIVISOR;
 
-                // Set Current Pixel to the Result of the Blur
-                blurredImage[r][c][0] = redAvg;
-                bluredImage[r][c][1] = greenAvg;
-                blurredImage[r][c][2] = blueAvg;
+                int index = r * this.getWidth() + c;
+                blurredImage.paint(index, avgColor);
             }
         }
 
         // Repalce Values
-        for (int r = 0; r < this.getHeight(); ++r) {
-            for (int c = 0; c < this.getWidth(); ++r) {
-                // Average Each Color Value
-                this.getPixels()[r][c][0] = blurredImage[r][c][0];
-                this.getPixels()[r][c][1] = blurredImage[r][c][1];
-                this.getPixels()[r][c][2] = blurredImage[r][c][2];
-            }
-        }
+        this.copyFrom(blurredImage);
     }
 }
