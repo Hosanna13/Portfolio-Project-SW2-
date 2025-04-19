@@ -307,18 +307,18 @@ Take some time to fill them out honestly.
 > complete the portfolio project, how much better (or worse) do you think you
 > understand software development and why?
 
-<!-- TODO: discuss -->
+I definitely understand software development a lot more now. Building a component from scratch and handling everything from kernel to abstract to test cases really forced me to think like a developer. It’s not just about writing code—it’s about thinking ahead, planning structure, testing, debugging, and making sure what you write is actually useful.
 
 > Also, did the portfolio project surface any gaps in your own knowledge of
 > software development. If so, what are those gaps and how did you address them?
 
-<!-- TODO: discuss -->
+Yes, especially around test coverage and edge case handling. At first, I thought I had tested “enough,” but when I ran into weird index errors or off-by-one bugs, I realized how easy it is to miss edge behavior. I went back and expanded my test cases to be more thorough.
 
 > Finally, as a part of completing the portfolio project, to what extent has
 > your perspective of software development changed, if at all? In other words,
 > is software development something you still enjoy? If not, why not?
 
-<!-- TODO: discuss -->
+Honestly, yeah. I used to think it was all just coding and maybe some documentation, but now I see it’s really about communication and structure. You have to make your code usable for others, not just yourself. That part surprised me.
 
 > One of the challenges of completing the portfolio project is picking up a lot
 > of skills on your own. Some of these skills are, of course, software skills.
@@ -326,21 +326,31 @@ Take some time to fill them out honestly.
 > this process. Therefore, the first question is what skills did you pick up
 > through this process?
 
+	•	Deepened my understanding of software modularity and abstraction.
+	•	Learned how to write comprehensive unit tests.
+	•	Got more confident with debugging image-based components.
+	•	Gained better habits around naming, method design, and doc comments.
 
 > The follow-up question is: could you rephrase these skills you picked up
 > as bullet points that you could put on a resume? Try it below.
 
+Developed and documented a modular image processing component in Java
+	•	Implemented full test coverage using JUnit for kernel and secondary methods
+	•	Designed and applied Gaussian blur and color manipulation algorithms
+	•	Published code to GitHub with structured use cases and versioning
 
 > Next, how has working on this project affected your career trajectory?
 > In other words, do you now hate the topic you picked? Or, are you even more
 > interested in it? Both outcomes are valuable to your personal development.
 
+I’m actually more interested in UI and graphics now. I didn’t think I’d enjoy image manipulation as much as I did, but seeing the visuals update from my code was really satisfying. I want to explore more of that—maybe animation or visual effects tools.
 
 > Finally, consider the skills you've picked up and your current career
 > trajectory. What are some things you could do to continue on your
 > career trajectory? Also, who are some mentors you could contact to help
 > you stay on your path?
 
+I can start building more visual or interactive Java applications (maybe something like a paint app or pixel editor), look into internships that involve UI/UX, and reach out to mentors in design-heavy dev roles. ColorStack and MLT both have people I can tap for advice.
 
 ### Changelog
 

@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Calendar Versioning](https://calver.org/) of
 the following form: YYYY.0M.0D.
+## 2025.04.17
+
+### Added
+
+- Designed comprehensive test suite for `Image1` component, covering kernel, abstract, and overridden methods
+- Created `ImageDemo` and `SpriteSheetDemo` for showcasing component in action
+- Implemented `GaussianBlur` with 3x3 convolution kernel
+- Added two visual use cases: artistic pixel sprite and blurred image
+
+### Updated
+
+- Refactored `equals` method in `ImageSecondary` to fix out-of-bounds bug
+- Cleaned up method naming and documentation across all classes
+- Expanded test cases to include edge, normal, and advanced cases
+
 ## 2025.03.26
 
 ### Added
