@@ -1,5 +1,6 @@
 package image;
 
+import java.awt.image.BufferedImage;
 /**
  * Abstract class implementing secondary methods for the Image component
  * using only kernel methods. This class includes convenience methods like
@@ -14,7 +15,7 @@ package image;
 import java.io.File;
 import java.io.IOException;
 import java.util.Random;
-import java.awt.image.BufferedImage;
+
 import javax.imageio.ImageIO;
 
 /**
@@ -171,11 +172,12 @@ public abstract class ImageSecondary implements Image {
     @Override
     public String toString() { // human reable part - SImplfy
         String result = "";
+        int[][][] pixels = this.getPixels();
         for (int r = 0; r < this.getHeight(); ++r) {
-            for (int c = 0; c < this.getWidth(); ++r) {
-                int red = this.getPixels()[r][c][0];
-                int green = this.getPixels()[r][c][1];
-                int blue = this.getPixels()[r][c][2];
+            for (int c = 0; c < this.getWidth(); ++c) {
+                int red = pixels[r][c][0];
+                int green = pixels[r][c][1];
+                int blue = pixels[r][c][2];
 
                 result += String.format("(%3d, %3d, %3d) ", red, green, blue);
             }
@@ -196,7 +198,6 @@ public abstract class ImageSecondary implements Image {
      */
     @Override
     public boolean equals(Object o) {
-        boolean result = false;
         if (this == o) {
             return true;
         }
@@ -210,30 +211,21 @@ public abstract class ImageSecondary implements Image {
         if (this.getWidth() != other.getWidth()
                 || this.getHeight() != other.getHeight()) {
             return false;
-
         }
 
-        // go through pixels
-        for (int i = 0; i < this.getTotalPixel(); ++i) {
-            if (this.contains(i) && other.contains(i)) {
-                for (int r = 0; r < this.getHeight(); ++r) {
-                    for (int c = 0; c < this.getWidth(); ++r) {
-                        int red = this.getPixels()[r][c][0];
-                        int green = this.getPixels()[r][c][1];
-                        int blue = this.getPixels()[r][c][2];
+        int[][][] pixels1 = this.getPixels();
+        int[][][] pixels2 = other.getPixels();
 
-                        int red1 = other.getPixels()[r][c][0];
-                        int green1 = other.getPixels()[r][c][1];
-                        int blue1 = other.getPixels()[r][c][2];
-
-                        if (red != red1 || green != green1 || blue != blue1) {
-                            return false;
-                        }
+        for (int r = 0; r < this.getHeight(); ++r) {
+            for (int c = 0; c < this.getWidth(); ++c) {
+                for (int channel = 0; channel < RGB_CHANNELS; ++channel) {
+                    if (pixels1[r][c][channel] != pixels2[r][c][channel]) {
+                        return false;
                     }
                 }
-
             }
         }
+
         return true;
     }
 

@@ -270,22 +270,18 @@ public class Image1 extends ImageSecondary {
 
     @Override
     public void clear() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'clear'");
+        this.clearImage();
     }
 
     @Override
     public Image newInstance() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException(
-                "Unimplemented method 'newInstance'");
+        return new Image1(this.width, this.height, new int[] { 0, 0, 0 });
     }
 
     @Override
     public void transferFrom(Image arg0) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException(
-                "Unimplemented method 'transferFrom'");
+        this.copyFrom(arg0);
+        arg0.clear();
     }
 
 }

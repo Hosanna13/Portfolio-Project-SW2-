@@ -1,8 +1,11 @@
 package image;
 
 import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.io.File;
 import java.util.Arrays;
 
 import org.junit.Test;
@@ -15,8 +18,6 @@ import org.junit.Test;
  * @author Hosanna
  */
 public class ImageSecondaryTest {
-    //TODO constucrtor test
-    //TODO
 
     @Test
     public void testClearImage() {
@@ -85,6 +86,51 @@ public class ImageSecondaryTest {
                         original[i][j].length);
             }
         }
-          return copy;
+        return copy;
+    }
+
+    @Test
+    public void testToString_outputFormat() {
+        Image img = new Image1(1, 1, new int[] { 10, 20, 30 });
+        String expected = "( 10,  20,  30) \n\n";
+        assertEquals(expected, img.toString());
+    }
+
+    @Test
+    public void testEquals_trueSamePixels() {
+        Image img1 = new Image1(2, 2, new int[] { 100, 150, 200 });
+        Image img2 = new Image1(2, 2, new int[] { 100, 150, 200 });
+        assertTrue(img1.equals(img2));
+    }
+
+    @Test
+    public void testEquals_falseDifferentDimensions() {
+        Image img1 = new Image1(2, 2, new int[] { 0, 0, 0 });
+        Image img2 = new Image1(3, 3, new int[] { 0, 0, 0 });
+        assertFalse(img1.equals(img2));
+    }
+
+    @Test
+    public void testSaveImage_createsFile() {
+        Image img = new Image1(2, 2, new int[] { 200, 100, 50 });
+        img.saveImage("test_output");
+        File f = new File("test_output.png");
+        assertTrue(f.exists());
+        f.delete(); // clean up
+    }
+
+    @Test
+    public void testPrintImage_runsWithoutCrash() {
+        Image img = new Image1(1, 1, new int[] { 123, 231, 132 });
+        img.printImage(); // Expect this to print without error
+    }
+
+    @Test
+    public void testGaussianBlur_softensEdges() {
+        Image1 img = new Image1(3, 3, new int[] { 0, 0, 0 });
+        img.paint(4, new int[] { 255, 255, 255 }); // center pixel
+        img.GaussianBlur();
+        int[][][] px = img.getPixels();
+        assertTrue(px[1][1][0] < 255); // center should be reduced
     }
 }
