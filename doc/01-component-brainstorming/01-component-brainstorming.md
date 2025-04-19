@@ -192,14 +192,15 @@ will likely refine your design to make your implementation easier to use.
   - **Description**:
       Represents a single frame in animation. It stores information about the frame, image, duration, and transformations. The purpose is to allow manipulcation of frames in an animation sequence. 
   - **Kernel Methods**:
-      - void setImage(String ImagePath): sets the image for this frame
+      - void setImage(String imagePath): sets the image for this frame
+      - String getImage(): gets the current image for blending or filtering
       - void setDuration(int milliseconds): sets the duration of this frame
-      - void applyTransformation(Transfomration t): applies a transformation (e.g scaling, rotation)
+      - void applyTransformation(TransformType t): applies a transformation (e.g., scaling, rotation) using an internal enum
   - **Secondary Methods**:
-    - void blendWith(AnimationFrame other , double alpha): blends this frame with another frame using alpha transparency 
-    - void adjustBrightness(double factor): modifies the brightness of the frame
-    - void addFilter(FilterType filter): adds fliter (like grayscale, moasic (if possible), and speia etc,..)
-    - AnimationFrame clone(): returns a copy of the frame 
+    - void blendWith(AnimationFrame other , double alpha): blends this frame with another frame using other.getImage() and setImage
+    - void adjustBrightness(double factor): modifies brightness using image data and updates via setImage
+    - void addFilter(FilterType filter): applies a visual filter using setImage
+    - AnimationFrame clone(): returns a copy of the frame using get/set methods
   - **Additional Considerations** (*note*: "I don't know" is an acceptable
     answer for each of the following questions):
     - Would this component be mutable? Answer and explain:
@@ -209,10 +210,10 @@ will likely refine your design to make your implementation easier to use.
       - Maybe, like transformation class might need some. 
     - Would this component need any enums or constants (e.g.,
       `Program.Instruction`)? Answer and explain:
-      - Yes for different filter types, like SPEIA, GRAYSCALE, INVERT, BLUR
+      - Yes, we would define an enum called TransformType to represent transformations like SCALE, ROTATE, TRANSLATE, and OPACITY. FilterType would also be an enum for filter options like GRAYSCALE, SEPIA, and BLUR.
     - Can you implement your secondary methods using your kernel methods?
       Answer, explain, and give at least one example:
-      - yes for example blendWidth can modifty the image by adjusting pixel values using setImage. 
+      - Yes. For example, blendWith uses other.getImage() and modifies this image before calling setImage. adjustBrightness and addFilter also compute updates and apply them via setImage.
 
 - Component Design #2: KeyframeAnimation 
   - **Description**:
